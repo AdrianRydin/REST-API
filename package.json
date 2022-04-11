@@ -1,6 +1,28 @@
 {
+  "name": "rest-api",
+  "version": "1.0.0",
+  "description": "Inlämningsuppgift 1 Dynamisk Webbutveckling",
+  "main": "index.js",
+  "scripts": {
+    "start": "node app",
+    "dev": "nodemon app"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/AdrianRydin/REST-API.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/AdrianRydin/REST-API/issues"
+  },
+  "homepage": "https://github.com/AdrianRydin/REST-API#readme",
   "dependencies": {
-    "@types/express": "^4.17.13",
-    "express": "^4.17.3"
+    "express": "^4.17.3",
+    "joi": "^13.1.0"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.15"
   }
 }
