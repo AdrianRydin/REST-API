@@ -3,29 +3,35 @@ const path = require('path')
 const express = require('express');
 const fs = require('fs')
 
-fs.readFile('/customer.json', 'utf-8', (err, jsonString) =>{
-    if (err) {
-        console.log(err);
-    } else{
-        try{
-            const data = JSON.parse(jsonString);
-            console.log(data)
-        } catch {
-            console.log('Error parsing JSON', err)
-        }
-    }
-})
 
+fs.readFile("customers.json", "utf8", (err, jsonString) => {
+    if (err) {
+        console.log("File read failed:", err);
+        return;
+    }
+    console.log("File data:", jsonString);
+});
 
 const app = express();
 
 app.use(express.json());
 
 const customers = [
-    { id: 1, name: 'Adrian'},
+    { 
+        id: 1,
+        name: 'Edwin',
+        country: "Sweden"
+    },
+    {
+        id: 2,
+        name: 'Adrian',
+        country: "Sweden"
+    }
 ]
 
+const jsonString = JSON.stringify(customers, null, 2);
 
+// GET
 
 app.get('/', (req, res) =>{
     res.sendFile(path.join(__dirname, 'public', 'index.html'))
@@ -35,6 +41,14 @@ app.get('/api/customers', (req, res) =>{
     res.send(customers)
 })
 
+app.get('/api/customers/:id', (req,res) =>{
+    let customer = customers.find(c => c.id === parseInt(req.params.id))
+    if (!customer) return res.status(404).send('The given ID was not found')
+    res.send(customer)
+})
+
+// POST
+
 app.post('/api/customers', (req, res) =>{
 
     const { error } = validateCustomer(req.body) // result.error
@@ -43,18 +57,14 @@ app.post('/api/customers', (req, res) =>{
 
     const customer = {
         id: customers.length + 1,
-        name: req.body.name
+        name: req.body.name,
+        country: req.body.country
     }
     customers.push(customer);
-    res.send(customer);
+
 })
 
-app.get('/api/customers/:id', (req,res) =>{
-    let customer = customers.find(c => c.id === parseInt(req.params.id))
-    if (!customer) return res.status(404).send('The given ID was not found')
-    res.send(customer)
-})
-
+// PUT
 app.put('/api/customers/:id', (req, res) =>{
     let customer = customers.find(c => c.id === parseInt(req.params.id))
     if (!customer) return res.status(404).send('The given ID was not found')
@@ -63,19 +73,13 @@ app.put('/api/customers/:id', (req, res) =>{
 
     if(error) return res.status(400).send(error.details[0].message)
 
-    
 
     customer.name = req.body.name;
+    customer.country = req.body.country;
     res.send(customer);
 })
 
-function validateCustomer(customer) {
-    const schema = {
-        name: Joi.string().min(3).required()
-    }
-
-    return Joi.validate(customer, schema);
-}
+// Delete
 
 app.delete('/api/customers/:id', (req, res) => {
     let customer = customers.find(c => c.id === parseInt(req.params.id))
@@ -87,6 +91,18 @@ app.delete('/api/customers/:id', (req, res) => {
     res.send(customer);
 
 })
+
+// Validering
+
+function validateCustomer(customer) {
+    const schema = {
+        name: Joi.string().min(3).required(),
+        country: Joi.string().min(3).required()
+    }
+
+    return Joi.validate(customer, schema);
+}
+
 
 // PORT
 
