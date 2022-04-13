@@ -1,16 +1,7 @@
 const Joi = require('joi');
 const path = require('path')
 const express = require('express');
-const fs = require('fs')
 
-
-fs.readFile("customers.json", "utf8", (err, jsonString) => {
-    if (err) {
-        console.log("File read failed:", err);
-        return;
-    }
-    console.log("File data:", jsonString);
-});
 
 const app = express();
 
@@ -29,7 +20,6 @@ const customers = [
     }
 ]
 
-const jsonString = JSON.stringify(customers, null, 2);
 
 // GET
 
@@ -51,15 +41,16 @@ app.get('/api/customers/:id', (req,res) =>{
 
 app.post('/api/customers', (req, res) =>{
 
+
     const { error } = validateCustomer(req.body) // result.error
     if(error) return res.status(400).send(error.details[0].message);
     
-
-    const customer = {
+     const customer = {
         id: customers.length + 1,
         name: req.body.name,
         country: req.body.country
-    }
+    } 
+    
     customers.push(customer);
 
 })

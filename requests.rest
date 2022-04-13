@@ -1,0 +1,31 @@
+### Get all customers
+GET http://localhost:3000/api/customers
+
+
+
+### Add Customer
+POST http://localhost:3000/api/customers
+Content-Type: application/json
+
+{
+    "name": "Kalle",
+    "country": "Sweden"
+}
+
+
+### Edit user information
+#Change id to the specific customer
+
+PUT http://localhost:3000/api/customers/id
+Content-Type: application/json
+
+{
+    "name": "Hej",
+    "country": "Norge"
+}
+
+
+### Delete user
+#Change id to the specific customer
+DELETE http://localhost:3000/api/customers/id
+
