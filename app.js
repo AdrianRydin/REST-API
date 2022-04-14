@@ -5,20 +5,24 @@ const express = require('express');
 
 const app = express();
 
-app.use(express.json());
+
 
 const customers = [
     { 
         id: 1,
         name: 'Edwin',
-        country: "Sweden"
+        country: "Sweden",
+        age: 19
     },
     {
         id: 2,
         name: 'Adrian',
-        country: "Sweden"
+        country: "Sweden",
+        age: 19
     }
 ]
+
+app.use(express.json());
 
 
 // GET
@@ -35,7 +39,7 @@ app.get('/api/customers/:id', (req,res) =>{
     let customer = customers.find(c => c.id === parseInt(req.params.id))
     if (!customer) return res.status(404).send('The given ID was not found')
     res.send(customer)
-})
+});
 
 // POST
 
@@ -48,10 +52,12 @@ app.post('/api/customers', (req, res) =>{
      const customer = {
         id: customers.length + 1,
         name: req.body.name,
-        country: req.body.country
-    } 
+        country: req.body.country,
+        age: req.body.age
+    };
     
     customers.push(customer);
+    res.send(customer)
 
 })
 
@@ -67,6 +73,8 @@ app.put('/api/customers/:id', (req, res) =>{
 
     customer.name = req.body.name;
     customer.country = req.body.country;
+    customer.age = req.body.age;
+
     res.send(customer);
 })
 
@@ -88,7 +96,8 @@ app.delete('/api/customers/:id', (req, res) => {
 function validateCustomer(customer) {
     const schema = {
         name: Joi.string().min(3).required(),
-        country: Joi.string().min(3).required()
+        country: Joi.string().min(3).required(),
+        age: Joi.number().required()
     }
 
     return Joi.validate(customer, schema);

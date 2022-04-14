@@ -9,23 +9,26 @@ Content-Type: application/json
 
 {
     "name": "Kalle",
-    "country": "Sweden"
+    "country": "Sweden",
+    "age": 19
+
 }
 
 
 ### Edit user information
 #Change id to the specific customer
 
-PUT http://localhost:3000/api/customers/id
+PUT http://localhost:3000/api/customers/1
 Content-Type: application/json
 
 {
     "name": "Hej",
-    "country": "Norge"
+    "country": "Norge",
+    "age": 18
 }
 
 
 ### Delete user
 #Change id to the specific customer
-DELETE http://localhost:3000/api/customers/id
+DELETE http://localhost:3000/api/customers/1
 
